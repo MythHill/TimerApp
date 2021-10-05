@@ -1,12 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:timerapp/Screens/Home.dart';
 
 class TimerScreen extends StatefulWidget {
-  const TimerScreen({ Key? key, required this.time}) : super(key: key);
+  const TimerScreen({ Key? key, required this.time, required this.timeFormat}) : super(key: key);
 
 
   final time;
+  final timeFormat;
 
   @override
   _TimerScreenState createState() => _TimerScreenState();
@@ -26,6 +28,30 @@ class _TimerScreenState extends State<TimerScreen> {
 
   void StartTimerSeconds(){
     timer = Timer.periodic(Duration(seconds: 1), (_){
+      if (seconds > 0){
+        setState((){
+          --seconds;
+          isStarted = true;
+        });
+      } else {
+        stopTimer();
+      }
+    });
+  }
+  void StartTimerMinutes(){
+    timer = Timer.periodic(Duration(minutes: 1), (_){
+      if (seconds > 0){
+        setState((){
+          --seconds;
+          isStarted = true;
+        });
+      } else {
+        stopTimer();
+      }
+    });
+  }
+  void StartTimerHours(){
+    timer = Timer.periodic(Duration(hours: 1), (_){
       if (seconds > 0){
         setState((){
           --seconds;
@@ -99,7 +125,7 @@ class _TimerScreenState extends State<TimerScreen> {
              )
            ],
          ):
-          ElevatedButton(onPressed: StartTimerSeconds, child: Text('Start')),
+          ElevatedButton(onPressed: () { widget.timeFormat == Choices.Hours ? StartTimerHours() : widget.timeFormat == Choices.Minutes ? StartTimerMinutes() : StartTimerSeconds();} , child: Text('Start')),
           ],)),
       
     );
